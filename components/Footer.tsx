@@ -32,7 +32,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li className="flex items-center gap-3">
                 <MapPin size={16} className="text-orange-400" />
-                <span>인천광역시 계양구 봉오대로 744번길 7</span>
+                <span>인천광역시 계양구 봉오대로 744번길 7 1동 805호</span>
               </li>
             </ul>
           </div>

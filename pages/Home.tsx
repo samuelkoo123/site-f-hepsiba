@@ -23,8 +23,8 @@ const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         
         <div className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto space-y-10 animate-in fade-in zoom-in duration-1000">
           <div className="flex flex-col items-center space-y-4">
-            <p className="text-xl md:text-2xl font-medium opacity-90 serif tracking-[0.2em] animate-fade-in">
-              하나님의 기쁨! 사랑받고 사랑하는
+            <p className="text-xl md:text-3xl font-medium opacity-90 serif tracking-[0.2em] animate-fade-in">
+              하나님의 기쁨!
             </p>
             <h1 className="text-4xl md:text-6xl font-bold leading-tight serif drop-shadow-2xl text-white">
               헵시바 선교회

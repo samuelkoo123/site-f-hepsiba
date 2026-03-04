@@ -44,6 +44,14 @@ export interface Sponsorship {
   date: string;
 }
 
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  type: 'personal' | 'official';
+}
+
 export enum Page {
   Home = 'home',
   About = 'about',

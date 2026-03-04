@@ -41,7 +41,7 @@ const Community: React.FC = () => {
     setSubmitting(true);
     const success = await db.save('testimony', testimonyData);
     if (success) {
-      alert('은혜로운 간증이 구글 스프레드시트 DB에 전송되었습니다. 반영까지 잠시 시간이 걸릴 수 있습니다.');
+      alert('은혜로운 간증이 DB에 전송되었습니다. 반영까지 잠시 시간이 걸릴 수 있습니다.');
       setTestimonyData({ author: '', title: '', content: '' });
       setIsTestimonyFormOpen(false);
       // 구글 시트 반영 속도를 고려하여 약간의 지연 후 다시 로드
@@ -59,7 +59,7 @@ const Community: React.FC = () => {
     setSubmitting(true);
     const success = await db.save('guestbook', { author: guestbookName, message: guestbookMsg });
     if (success) {
-      alert('방명록이 구글 스프레드시트 DB에 등록되었습니다.');
+      alert('방명록이 DB에 등록되었습니다.');
       setGuestbookName('');
       setGuestbookMsg('');
       setTimeout(loadData, 2000);
@@ -72,7 +72,7 @@ const Community: React.FC = () => {
     setSubmitting(true);
     const success = await db.save('inquiry', inquiryData);
     if (success) {
-      alert('문의사항이 구글 스프레드시트 관리자 탭으로 전송되었습니다.');
+      alert('문의사항이 관리자 탭으로 전송되었습니다.');
       setInquiryData({ name: '', email: '', subject: '', message: '' });
     }
     setSubmitting(false);
@@ -151,7 +151,7 @@ const Community: React.FC = () => {
                         type="submit" className="w-full py-4 bg-orange-500 text-white rounded-xl font-bold hover:bg-orange-600 transition-all flex justify-center items-center gap-2"
                       >
                         {submitting && <Loader2 className="w-5 h-5 animate-spin" />}
-                        {submitting ? '구글 시트 전송 중...' : '간증 등록하기'}
+                        {submitting ? 'DB 전송 중...' : '간증 등록하기'}
                       </button>
                     </form>
                   </div>
@@ -159,7 +159,7 @@ const Community: React.FC = () => {
 
                 {testimonies.length === 0 ? (
                   <div className="bg-white p-12 rounded-[2rem] text-center text-gray-400 border border-gray-100">
-                    아직 구글 시트에 등록된 간증이 없습니다.
+                    아직 DB에 등록된 간증이 없습니다.
                   </div>
                 ) : (
                   testimonies.map((t, idx) => (
@@ -200,7 +200,7 @@ const Community: React.FC = () => {
                       type="submit" className="flex items-center gap-2 bg-orange-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-orange-600 transition-colors"
                     >
                       {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send size={18} />}
-                      {submitting ? '전송 중' : '등록하기'}
+                      {submitting ? 'DB 전송 중' : '등록하기'}
                     </button>
                   </div>
                 </form>
@@ -228,7 +228,7 @@ const Community: React.FC = () => {
                 <div className="text-center">
                   <MessageSquare className="w-12 h-12 text-orange-400 mx-auto mb-4" />
                   <h2 className="text-2xl font-bold text-gray-800 serif">무엇을 도와드릴까요?</h2>
-                  <p className="text-gray-500 mt-2">구글 시트 DB로 안전하게 전송됩니다.</p>
+                  <p className="text-gray-500 mt-2"></p>
                 </div>
                 <form onSubmit={handleInquirySubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -262,7 +262,7 @@ const Community: React.FC = () => {
                     type="submit" className="w-full py-5 bg-orange-500 text-white rounded-2xl font-bold text-lg shadow-lg hover:bg-orange-600 transition-all flex justify-center items-center gap-2"
                   >
                     {submitting && <Loader2 className="w-5 h-5 animate-spin" />}
-                    {submitting ? '시트 전송 중...' : '보내기'}
+                    {submitting ? 'DB 전송 중...' : '보내기'}
                   </button>
                 </form>
               </div>

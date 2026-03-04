@@ -1,21 +1,21 @@
 
-import { Inquiry, Resource, GuestbookEntry, Testimony, Sponsorship } from './types';
-
-// 사용자의 실제 구글 앱스 스크립트 웹 앱 URL
-const API_URL = 'https://script.google.com/macros/s/AKfycbyDM_YgQdq7b_id97x7W7mlyM49Wl-wbsMSg8ucs8Xf_As2TXDcfEZMmzwyUPASgFhXLQ/exec'; 
+import { Inquiry, Resource, GuestbookEntry, Testimony, Sponsorship, CalendarEvent } from './types';
 
 export const db = {
-  async save(type: 'inquiry' | 'resource' | 'guestbook' | 'testimony' | 'sponsorship', payload: any): Promise<boolean> {
-    if (!API_URL) return false;
-
+  async save(type: 'inquiry' | 'resource' | 'guestbook' | 'testimony' | 'sponsorship' | 'calendar', payload: any): Promise<boolean> {
     try {
-      await fetch(API_URL, {
+      const data = {
+        id: payload.id || Math.random().toString(36).substr(2, 9),
+        date: payload.date || new Date().toISOString().split('T')[0],
+        ...payload
+      };
+
+      const response = await fetch('/api/save', {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ dbCategory: type, ...payload })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dbCategory: type, ...data })
       });
-      return true; 
+      return response.ok;
     } catch (e) {
       console.error('Save Error:', e);
       return false;
@@ -27,58 +27,34 @@ export const db = {
     resources: Resource[],
     guestbook: GuestbookEntry[],
     testimonies: Testimony[],
-    sponsorships: Sponsorship[]
+    sponsorships: Sponsorship[],
+    calendarEvents: CalendarEvent[]
   }> {
-    const results = {
-      inquiries: [] as Inquiry[],
-      resources: [] as Resource[],
-      guestbook: [] as GuestbookEntry[],
-      testimonies: [] as Testimony[],
-      sponsorships: [] as Sponsorship[]
-    };
-
-    if (!API_URL) return results;
-
     try {
-      const response = await fetch(API_URL);
-      const rawData = await response.json(); 
-
-      if (Array.isArray(rawData)) {
-        rawData.forEach((row) => {
-          if (row.length >= 3) {
-            try {
-              const category = row[1]; // 구글 시트 2번째 열 (dbCategory)
-              const item = JSON.parse(row[2]); // 3번째 열 (JSON 데이터)
-              
-              if (category === 'inquiry') results.inquiries.unshift(item);
-              else if (category === 'resource') results.resources.unshift(item);
-              else if (category === 'guestbook') results.guestbook.unshift(item);
-              else if (category === 'testimony') results.testimonies.unshift(item);
-              else if (category === 'sponsorship') results.sponsorships.unshift(item);
-            } catch (parseErr) {
-              // 헤더 혹은 파싱 오류 건너뛰기
-            }
-          }
-        });
-      }
+      const response = await fetch('/api/data');
+      if (!response.ok) throw new Error('Failed to fetch data');
+      return await response.json();
     } catch (e) {
       console.error('Fetch Error:', e);
+      return {
+        inquiries: [],
+        resources: [],
+        guestbook: [],
+        testimonies: [],
+        sponsorships: [],
+        calendarEvents: []
+      };
     }
-
-    return results;
   },
 
   async delete(type: string, id: string): Promise<boolean> {
-    if (!API_URL) return false;
-
     try {
-      await fetch(API_URL, {
+      const response = await fetch('/api/delete', {
         method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify({ action: 'delete', id, type })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, type })
       });
-      return true;
+      return response.ok;
     } catch (e) {
       console.error('Delete Error:', e);
       return false;
